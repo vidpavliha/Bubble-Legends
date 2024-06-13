@@ -8,14 +8,17 @@ scene.onOverlapTile(SpriteKind.Bubble, assets.tile`myTile`, function (sprite, lo
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     p1.vy += -100
     pause(500)
-    p1.setVelocity(0, 30)
+    p1.vy = 30
+})
+info.onCountdownEnd(function () {
+    game.setGameOverEffect(false, effects.dissolve)
+    game.gameOver(false)
 })
 scene.onOverlapTile(SpriteKind.Bubble, assets.tile`spike`, function (sprite, location) {
     tiles.placeOnTile(p1, tiles.getTileLocation(1, 6))
     info.changeLifeBy(-1)
 })
 scene.onOverlapTile(SpriteKind.Bubble, assets.tile`finish`, function (sprite, location) {
-    game.setGameOverScoringType(game.ScoringType.HighScore)
     game.setGameOverEffect(true, effects.starField)
     game.gameOver(true)
 })
@@ -34,3 +37,8 @@ tiles.setCurrentTilemap(tilemap`LvL1`)
 tiles.placeOnTile(p1, tiles.getTileLocation(1, 6))
 info.setLife(5)
 info.setScore(0)
+blockSettings.writeNumber("vy", 30)
+forever(function () {
+    p1.vy = blockSettings.readNumber("vy")
+    console.log(blockSettings.readNumber("vy"))
+})
